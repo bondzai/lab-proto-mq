@@ -1,3 +1,4 @@
+import hashlib
 import hmac
 import requests
 import json
