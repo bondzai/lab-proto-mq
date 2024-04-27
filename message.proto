@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option go_package = "./proto";
+
+message MyMessage {
+  string id = 1;
+  string content = 2;
+}
