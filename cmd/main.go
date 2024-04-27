@@ -4,8 +4,8 @@ import (
 	"flag"
 	"log"
 
+	"protomq/internal/rabbitmq"
 	pb "protomq/proto"
-	"protomq/rabbitmq"
 )
 
 var pFlag = flag.Bool("p", false, "RabbitMQ publisher start flag")
