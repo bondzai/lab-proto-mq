@@ -27,17 +27,22 @@ func main() {
 			log.Println("error create rabbitmq publisher ", err)
 		}
 
-		p.Publish(&pb.MyMessage{
+		message := &pb.MyMessage{
 			Id:      "test Id",
 			Content: "test Content",
-		})
+		}
+
+		p.Publish(message)
 	}
 
 	if *cFlag {
-		c, _ := rabbitmq.NewRabbitMQConsumer(
+		c, err := rabbitmq.NewRabbitMQConsumer(
 			rabbitmq.ConnectionURL,
 			rabbitmq.QueueName,
 		)
+		if err != nil {
+			log.Println("error create rabbitmq consumer ", err)
+		}
 
 		c.Consume()
 		select {}
