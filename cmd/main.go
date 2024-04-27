@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 
 	"protomq/rabbitmq"
 )
@@ -18,10 +19,13 @@ func main() {
 			fmt.Println("message sent successfully")
 		}()
 
-		p, _ := rabbitmq.NewRabbitMQPublisher(
+		p, err := rabbitmq.NewRabbitMQPublisher(
 			rabbitmq.ConnectionURL,
 			rabbitmq.QueueName,
 		)
+		if err != nil {
+			log.Println("error create rabbitmq publisher ", err)
+		}
 
 		message := map[string]interface{}{
 			"message": "test message",
