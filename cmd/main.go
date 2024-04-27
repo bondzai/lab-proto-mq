@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"protomq/rabbitmq"
 )
 
 var pFlag = flag.Bool("p", false, "RabbitMQ publisher start flag")
@@ -12,7 +14,20 @@ func main() {
 	flag.Parse()
 
 	if *pFlag {
-		fmt.Println("start pulisher service")
+		defer func() {
+			fmt.Println("message sent successfully")
+		}()
+
+		p, _ := rabbitmq.NewRabbitMQPublisher(
+			rabbitmq.ConnectionURL,
+			rabbitmq.QueueName,
+		)
+
+		message := map[string]interface{}{
+			"message": "test message",
+		}
+
+		p.Publish(message)
 	}
 
 	if *cFlag {
