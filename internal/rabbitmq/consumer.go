@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 
+	"protomq/internal/util"
+
 	"github.com/streadway/amqp"
 )
 
@@ -68,7 +70,7 @@ func (c *RabbitMQConsumer) Consume() error {
 		for d := range msgs {
 			var data interface{}
 			if err := json.Unmarshal(d.Body, &data); err != nil {
-				log.Printf("Error decoding message body: %v", err)
+				log.Println(util.ErrDecodeMsg, err)
 				continue
 			}
 			// Process the received message, for now, just print it

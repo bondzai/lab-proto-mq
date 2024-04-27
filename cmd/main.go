@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"protomq/internal/rabbitmq"
+	"protomq/internal/util"
 	pb "protomq/proto"
 )
 
@@ -24,7 +25,7 @@ func main() {
 			rabbitmq.QueueName,
 		)
 		if err != nil {
-			log.Println("error create rabbitmq publisher ", err)
+			log.Println(util.ErrCreatePublisher, err)
 		}
 
 		message := &pb.MyMessage{
@@ -41,7 +42,7 @@ func main() {
 			rabbitmq.QueueName,
 		)
 		if err != nil {
-			log.Println("error create rabbitmq consumer ", err)
+			log.Println(util.ErrCreateConsumer, err)
 		}
 
 		c.Consume()
