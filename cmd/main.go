@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 
 	"protomq/rabbitmq"
@@ -15,10 +14,6 @@ func main() {
 	flag.Parse()
 
 	if *pFlag {
-		defer func() {
-			fmt.Println("message sent successfully")
-		}()
-
 		p, err := rabbitmq.NewRabbitMQPublisher(
 			rabbitmq.ConnectionURL,
 			rabbitmq.QueueName,
@@ -31,10 +26,17 @@ func main() {
 			"message": "test message",
 		}
 
-		p.Publish(message)
+		go p.Publish(message)
 	}
 
 	if *cFlag {
-		fmt.Println("start consumer service")
+		c, _ := rabbitmq.NewRabbitMQConsumer(
+			rabbitmq.ConnectionURL,
+			rabbitmq.QueueName,
+		)
+
+		go c.Consume()
 	}
+
+	select {}
 }
