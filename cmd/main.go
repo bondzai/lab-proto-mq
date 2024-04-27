@@ -14,6 +14,10 @@ func main() {
 	flag.Parse()
 
 	if *pFlag {
+		defer func() {
+			log.Println("message sent successfully")
+		}()
+
 		p, err := rabbitmq.NewRabbitMQPublisher(
 			rabbitmq.ConnectionURL,
 			rabbitmq.QueueName,
@@ -26,7 +30,7 @@ func main() {
 			"message": "test message",
 		}
 
-		go p.Publish(message)
+		p.Publish(message)
 	}
 
 	if *cFlag {
@@ -35,8 +39,7 @@ func main() {
 			rabbitmq.QueueName,
 		)
 
-		go c.Consume()
+		c.Consume()
+		select {}
 	}
-
-	select {}
 }
