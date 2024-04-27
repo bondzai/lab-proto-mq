@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 
+	pb "protomq/proto"
 	"protomq/rabbitmq"
 )
 
@@ -26,11 +27,10 @@ func main() {
 			log.Println("error create rabbitmq publisher ", err)
 		}
 
-		message := map[string]interface{}{
-			"message": "test message",
-		}
-
-		p.Publish(message)
+		p.Publish(&pb.MyMessage{
+			Id:      "test Id",
+			Content: "test Content",
+		})
 	}
 
 	if *cFlag {
